@@ -56,7 +56,7 @@ public class GreetServiceImpl extends GreetServiceGrpc.GreetServiceImplBase {
             public void onNext(LongGreetRequest value) {
                 // client sends a message
 
-                result += ". Hello " + value.getGreeting().getFirstName() + "! ";
+                result += "Hello " + value.getGreeting().getFirstName() + "! ";
             }
 
             @Override
