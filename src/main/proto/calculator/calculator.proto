@@ -24,10 +24,22 @@ message PrimeNumberDecompositionResponse {
   int32 result_number = 1;
 }
 
+// Client Streaming
+message ComputeAverageRequest {
+  int32 number = 1;
+}
+
+message ComputeAverageResponse {
+  float average_number = 1;
+}
+
 service CalculatorService {
   // Unary
   rpc Sum(SumRequest) returns (SumResponse) {};
 
   // Server Streaming
   rpc PrimeNumberDecomposition(PrimeNumberDecompositionRequest) returns (stream PrimeNumberDecompositionResponse) {};
+
+  // Client Streaming
+  rpc ComputeAverage(stream ComputeAverageRequest) returns (ComputeAverageResponse) {};
 }
