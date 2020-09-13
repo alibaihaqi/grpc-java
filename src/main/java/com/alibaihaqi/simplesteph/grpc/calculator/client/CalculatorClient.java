@@ -94,29 +94,35 @@ public class CalculatorClient {
             }
         });
 
-        // streaming message #1
+        // streaming message for 10000 numbers
         System.out.println("Sending Message #1");
-        requestObserver.onNext(ComputeAverageRequest.newBuilder()
-                .setNumber(1)
+        for (int i = 0; i < 10000; i++) {
+            requestObserver.onNext(ComputeAverageRequest.newBuilder()
+                .setNumber(i)
                 .build());
-
-        // streaming message #2
-        System.out.println("Sending Message #2");
-        requestObserver.onNext(ComputeAverageRequest.newBuilder()
-                .setNumber(2)
-                .build());
-
-        // streaming message #3
-        System.out.println("Sending Message #3");
-        requestObserver.onNext(ComputeAverageRequest.newBuilder()
-                .setNumber(3)
-                .build());
-
-        // streaming message #4
-        System.out.println("Sending Message #4");
-        requestObserver.onNext(ComputeAverageRequest.newBuilder()
-                .setNumber(4)
-                .build());
+        }
+//        System.out.println("Sending Message #1");
+//        requestObserver.onNext(ComputeAverageRequest.newBuilder()
+//                .setNumber(1)
+//                .build());
+//
+//        // streaming message #2
+//        System.out.println("Sending Message #2");
+//        requestObserver.onNext(ComputeAverageRequest.newBuilder()
+//                .setNumber(2)
+//                .build());
+//
+//        // streaming message #3
+//        System.out.println("Sending Message #3");
+//        requestObserver.onNext(ComputeAverageRequest.newBuilder()
+//                .setNumber(3)
+//                .build());
+//
+//        // streaming message #4
+//        System.out.println("Sending Message #4");
+//        requestObserver.onNext(ComputeAverageRequest.newBuilder()
+//                .setNumber(4)
+//                .build());
 
         requestObserver.onCompleted();
 
