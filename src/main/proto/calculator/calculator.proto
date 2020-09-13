@@ -33,6 +33,15 @@ message ComputeAverageResponse {
   float average_number = 1;
 }
 
+// BiDi Streaming
+message FindMaximumRequest {
+  int32 number = 1;
+}
+
+message FindMaximumResponse {
+  int32 maximum_number = 1;
+}
+
 service CalculatorService {
   // Unary
   rpc Sum(SumRequest) returns (SumResponse) {};
@@ -42,4 +51,7 @@ service CalculatorService {
 
   // Client Streaming
   rpc ComputeAverage(stream ComputeAverageRequest) returns (ComputeAverageResponse) {};
+
+  // BiDi Streaming
+  rpc FindMaximum(stream FindMaximumRequest) returns (stream FindMaximumResponse) {};
 }
