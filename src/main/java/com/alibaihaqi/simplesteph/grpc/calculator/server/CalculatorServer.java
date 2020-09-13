@@ -10,7 +10,7 @@ public class CalculatorServer {
     public static void main(String[] args) throws IOException, InterruptedException {
         System.out.println("Hello gRPC");
 
-        Server server = ServerBuilder.forPort(50051)
+        Server server = ServerBuilder.forPort(50052)
                 .addService(new CalculatorServiceImpl())
                 .build();
 
