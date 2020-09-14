@@ -8,6 +8,7 @@ out/
 .settings/
 .vscode/
 target/
+ssl/
 
 # Ignore Gradle GUI config
 gradle-app.setting
