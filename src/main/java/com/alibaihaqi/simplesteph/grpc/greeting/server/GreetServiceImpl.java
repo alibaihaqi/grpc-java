@@ -1,6 +1,7 @@
 package com.alibaihaqi.simplesteph.grpc.greeting.server;
 
 import com.proto.greet.*;
+import io.grpc.Context;
 import io.grpc.stub.StreamObserver;
 
 public class GreetServiceImpl extends GreetServiceGrpc.GreetServiceImplBase {
@@ -105,5 +106,33 @@ public class GreetServiceImpl extends GreetServiceGrpc.GreetServiceImplBase {
         };
 
         return requestObserver;
+    }
+
+    @Override
+    public void greetWithDeadline(GreetWithDeadlineRequest request, StreamObserver<GreetWithDeadlineResponse> responseObserver) {
+
+        Context current = Context.current();
+
+        try {
+            for (int i = 0; i < 3; i++) {
+                if (!current.isCancelled()) {
+                    System.out.println("sleep for 100ms");
+                    Thread.sleep(100);
+                } else {
+                    return;
+                }
+            }
+
+            System.out.println("sent response!" + request.getGreeting().getFirstName());
+            responseObserver.onNext(
+                    GreetWithDeadlineResponse.newBuilder()
+                            .setResult("hello " + request.getGreeting().getFirstName())
+                            .build()
+            );
+
+            responseObserver.onCompleted();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
