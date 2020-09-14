@@ -3,15 +3,19 @@ package com.alibaihaqi.simplesteph.grpc.greeting.client;
 import com.proto.dummy.DummyServiceGrpc;
 import com.proto.greet.*;
 import io.grpc.*;
+import io.grpc.netty.shaded.io.grpc.netty.GrpcSslContexts;
+import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
 import io.grpc.stub.StreamObserver;
 
+import javax.net.ssl.SSLException;
+import java.io.File;
 import java.util.Arrays;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public class GreetingClient {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SSLException {
         System.out.println("Hello, I'm a gRPC Client");
 
         GreetingClient main = new GreetingClient();
@@ -23,20 +27,30 @@ public class GreetingClient {
         // DummyServiceGrpc.DummyServiceFutureStub asyncClient = DummyServiceGrpc.newFutureStub(channel);
     }
 
-    private void run() {
-        ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 50051)
-                .usePlaintext()
+    private void run() throws SSLException {
+        // plaintext channel
+//        ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 50051)
+//                .usePlaintext()
+//                .build();
+
+        // With server authentication SSL/TLS; custom CA root certificates; not on Android
+        ManagedChannel secureChannel = NettyChannelBuilder.forAddress("localhost", 50051)
+                .sslContext(GrpcSslContexts.forClient().trustManager(
+                        new File("ssl/ca.crt")
+                ).build())
                 .build();
 
         // doUnaryCall(channel);
         // doServerStreamingCall(channel);
         // doClientStreamingCall(channel);
         // doBiDiStreamingCall(channel);
-        doUnaryCallWithDeadline(channel);
+        // doUnaryCallWithDeadline(channel);
+
+        doUnaryCall(secureChannel);
 
         // do something
         System.out.println("Shutting down channel!");
-        channel.shutdown();
+        secureChannel.shutdown();
     }
 
     private void doUnaryCall(ManagedChannel channel) {
