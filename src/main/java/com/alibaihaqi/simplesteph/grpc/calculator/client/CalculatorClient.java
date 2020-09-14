@@ -3,6 +3,7 @@ package com.alibaihaqi.simplesteph.grpc.calculator.client;
 import com.proto.calculator.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 
 import java.util.Arrays;
@@ -27,7 +28,8 @@ public class CalculatorClient {
 //        doUnaryCall(channel);
 //        doServerStreamingCall(channel);
 //        doClientStreamingCall(channel);
-        doBiDiStreamingCall(channel);
+//        doBiDiStreamingCall(channel);
+        doErrorCall(channel);
 
         // do something
         System.out.println("Shutting down channel!");
@@ -185,5 +187,22 @@ public class CalculatorClient {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    private void doErrorCall (ManagedChannel channel) {
+        CalculatorServiceGrpc.CalculatorServiceBlockingStub syncClient = CalculatorServiceGrpc.newBlockingStub(channel);
+
+        Integer number = -1;
+
+        try {
+            syncClient.squareRoot(SquareRootRequest.newBuilder()
+                    .setNumber(number)
+                    .build());
+        } catch (StatusRuntimeException e) {
+            System.out.println("Got an exception for square root");
+//            e.getStatus();
+            e.printStackTrace();
+        }
+
     }
 }
