@@ -21,6 +21,19 @@ message CreateBlogResponse {
   Blog blog = 1; // the id will correspond to the one in MongoDB
 }
 
+// Read Blog
+message ReadBlogRequest {
+  string blog_id = 1;
+}
+
+message ReadBlogResponse {
+  Blog blog = 1;
+}
+
 service BlogService {
+  // RPC Create Blog
   rpc CreateBlog(CreateBlogRequest) returns (CreateBlogResponse) {};
+
+  // RPC Read Blog
+  rpc ReadBlog(ReadBlogRequest) returns (ReadBlogResponse) {};
 }
