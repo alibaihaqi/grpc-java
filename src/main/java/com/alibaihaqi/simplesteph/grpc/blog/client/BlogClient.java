@@ -1,9 +1,6 @@
 package com.alibaihaqi.simplesteph.grpc.blog.client;
 
-import com.proto.blog.Blog;
-import com.proto.blog.BlogServiceGrpc;
-import com.proto.blog.CreateBlogRequest;
-import com.proto.blog.CreateBlogResponse;
+import com.proto.blog.*;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
@@ -23,14 +20,21 @@ public class BlogClient {
 
         System.out.println("Creating stub!");
 
-//      doUnaryCall(channel);
+        doCreateBlogCall(channel);
+        doReadBlogCall(channel);
 
+        // do something
+        System.out.println("Shutting down channel!");
+        channel.shutdown();
+    }
+
+    protected void doCreateBlogCall (ManagedChannel channel) {
         BlogServiceGrpc.BlogServiceBlockingStub blogClient = BlogServiceGrpc.newBlockingStub(channel);
 
         Blog blog = Blog.newBuilder()
-                .setAuthorId("Jacky")
-                .setTitle("New Blog!")
-                .setContent("Hello world this is my first blog!")
+                .setAuthorId("Jacky 2")
+                .setTitle("New Blog 2!")
+                .setContent("Hello world this is my second blog!")
                 .build();
 
         CreateBlogResponse createResponse = blogClient.createBlog(
@@ -42,9 +46,18 @@ public class BlogClient {
 
         System.out.println("Received create blog response");
         System.out.println(createResponse.toString());
+    }
 
-        // do something
-        System.out.println("Shutting down channel!");
-        channel.shutdown();
+    private void doReadBlogCall (ManagedChannel channel) {
+        BlogServiceGrpc.BlogServiceBlockingStub blogClient = BlogServiceGrpc.newBlockingStub(channel);
+
+        ReadBlogResponse createResponse = blogClient.readBlog(
+                ReadBlogRequest.newBuilder()
+                        .setBlogId("5f626b70705dc504233621c5")
+                        .build()
+        );
+
+        System.out.println("Received read blog response");
+        System.out.println(createResponse.toString());
     }
 }
