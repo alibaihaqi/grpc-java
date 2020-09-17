@@ -20,15 +20,16 @@ public class BlogClient {
 
         System.out.println("Creating stub!");
 
-        doCreateBlogCall(channel);
-        doReadBlogCall(channel);
+//        doCreateBlogCall(channel);
+//        doReadBlogCall(channel);
+        doUpdateBlogCall(channel);
 
         // do something
         System.out.println("Shutting down channel!");
         channel.shutdown();
     }
 
-    protected void doCreateBlogCall (ManagedChannel channel) {
+    private void doCreateBlogCall (ManagedChannel channel) {
         BlogServiceGrpc.BlogServiceBlockingStub blogClient = BlogServiceGrpc.newBlockingStub(channel);
 
         Blog blog = Blog.newBuilder()
@@ -53,11 +54,31 @@ public class BlogClient {
 
         ReadBlogResponse createResponse = blogClient.readBlog(
                 ReadBlogRequest.newBuilder()
-                        .setBlogId("5f626b70705dc504233621c5")
+                        .setBlogId("fake-id")
                         .build()
         );
 
         System.out.println("Received read blog response");
+        System.out.println(createResponse.toString());
+    }
+
+    private void doUpdateBlogCall (ManagedChannel channel) {
+        BlogServiceGrpc.BlogServiceBlockingStub blogClient = BlogServiceGrpc.newBlockingStub(channel);
+
+        Blog blog = Blog.newBuilder()
+                .setId("fake-id")
+                .setAuthorId("Jacky 5")
+                .setTitle("Update Blog 5!")
+                .setContent("Hello world this is my fifth update blog!")
+                .build();
+
+        UpdateBlogResponse createResponse = blogClient.updateBlog(
+                UpdateBlogRequest.newBuilder()
+                        .setBlog(blog)
+                        .build()
+        );
+
+        System.out.println("Received update blog response");
         System.out.println(createResponse.toString());
     }
 }
