@@ -125,7 +125,7 @@ public class BlogServiceImpl extends BlogServiceGrpc.BlogServiceImplBase {
             System.out.println("Replaced! Sending as a response");
             responseObserver.onNext(
                     UpdateBlogResponse.newBuilder()
-                            .setBlog(documentToBlog(result))
+                            .setBlog(documentToBlog(replacement))
                             .build()
             );
 
