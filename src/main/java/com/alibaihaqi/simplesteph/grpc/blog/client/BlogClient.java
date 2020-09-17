@@ -22,7 +22,8 @@ public class BlogClient {
 
 //        doCreateBlogCall(channel);
 //        doReadBlogCall(channel);
-        doUpdateBlogCall(channel);
+//        doUpdateBlogCall(channel);
+        doDeleteBlogCall(channel);
 
         // do something
         System.out.println("Shutting down channel!");
@@ -80,5 +81,18 @@ public class BlogClient {
 
         System.out.println("Received update blog response");
         System.out.println(createResponse.toString());
+    }
+
+    private void doDeleteBlogCall (ManagedChannel channel) {
+        BlogServiceGrpc.BlogServiceBlockingStub blogClient = BlogServiceGrpc.newBlockingStub(channel);
+
+        DeleteBlogResponse createResponse = blogClient.deleteBlog(
+                DeleteBlogRequest.newBuilder()
+                        .setBlogId("5f626f254ecd380f9799b5fa")
+                        .build()
+        );
+
+        System.out.println("Received delete blog response");
+        System.out.println("Success delete with id" + createResponse.getBlogId());
     }
 }
